@@ -1,23 +1,36 @@
 import pygame
 from ProjectConstants import *
 from matrixgraph import MatrixGraph
+from  radiobutton import RadioButton
 
+# WORK MODES
 
 class WorkMode():
     ON_OFF_MODE = 1
+    STERILE = 2
 
+pygame.init()
 
+# SCREEN CREATION
 
 WIN = pygame.display.set_mode((PygameConstants["WIDTH"], PygameConstants["HEIGHT"]))
 pygame.display.set_caption(PygameConstants["SCREEN_TITLE"])
 
-def handel_mouse_left_key(work_mode, node : MatrixGraph.InnerNode):
-    if work_mode == WorkMode.ON_OFF_MODE:
+# FONTS
+
+DEFAULT_FONT = pygame.font.SysFont( "cambria", FONT_SIZE)
+
+
+
+
+
+def handel_mouse_left_key(work_mode : RadioButton, node : MatrixGraph.InnerNode):
+
+    work_mode.handel_click()
+
+    if work_mode.get_mode() == WorkMode.ON_OFF_MODE:
         if None != node:
             node.flip()
-
-
-    
 
 
 def blit_graph(graph):
@@ -27,16 +40,29 @@ def blit_graph(graph):
             color = (int(node.color[0] * SHADE_FACTOR), int(node.color[1] * SHADE_FACTOR),int(node.color[2] * SHADE_FACTOR))
         pygame.draw.rect(WIN, color, (node.x_coor, node.y_coor, VisGlobals["vertex size"], VisGlobals["vertex size"]))
 
-def draw_screen(graph):
+def draw_screen(graph, Printables):
     WIN.fill(BLACK)
 
     blit_graph(graph)
+
+    for printable in Printables:
+        printable.blit()
+
     pygame.display.update()
 
 # MAINLOOP
 
 def mainloop(graph):
-    WORK_MODE = WorkMode.ON_OFF_MODE
+
+    work_modes = [
+        RadioButton.Option("toggle button", WorkMode.ON_OFF_MODE, 650, 500),
+        RadioButton.Option("sterile mode", WorkMode.STERILE, 650, 530),
+    ]
+
+    WORK_MODE = RadioButton(WIN, DEFAULT_FONT, work_modes, 0)
+
+    PRINTABLES = [WORK_MODE]
+
     clock = pygame.time.Clock()
     run = True
     node_hovered = None
@@ -60,7 +86,7 @@ def mainloop(graph):
                     handel_mouse_left_key(WORK_MODE, node_hovered)
                     
 
-        draw_screen(graph)
+        draw_screen(graph, PRINTABLES)
         
 
     pygame.quit()

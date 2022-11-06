@@ -1,6 +1,8 @@
 from ProjectConstants import *
 import pygame
 
+
+
 class RadioButton:
 
     class Option:
@@ -11,13 +13,18 @@ class RadioButton:
             self.y_pos = y_pos
             self.size = button_size
 
+
         def is_in(self, x, y):
             d = ((x - self.x_pos) ** 2 + (y - self.y_pos) ** 2) ** 0.5
             return d < self.size
         
+        def get_text(self):
+            return 
+        
 
-    def __init__(self, surface : pygame.Surface, option_list = [], def_choice = -1):
+    def __init__(self, surface : pygame.Surface, font, option_list = [], def_choice = -1):
         self.surface = surface
+        self.font = font
         self.none_chosen = RadioButton.Option("null", None, 0, 0)
         self.options = option_list
         self.choice = self.none_chosen
@@ -39,7 +46,13 @@ class RadioButton:
     def blit(self):
         
         for opt in self.options:
-            pygame.draw.circle(self.surface, WHITE, (opt.x_pos,opt.y_pos), opt.size)
+            pygame.draw.circle(self.surface, WHITE,(opt.x_pos,opt.y_pos), opt.size)
+
+            text = self.font.render(opt.opt_name, True, WHITE, BLACK)
+            text_rect = text.get_rect()
+            text_rect.center = (opt.x_pos , opt.y_pos)
+            text_rect.left = opt.x_pos + opt.size * 1.5
+            self.surface.blit(text, text_rect)
         
-        pygame.draw.circle(self.surface, BLACK, (opt.x_pos,opt.y_pos), opt.size * radio_inner_circle_factor)
+        pygame.draw.circle(self.surface, BLACK, (self.choice.x_pos, self.choice.y_pos), self.choice.size * radio_inner_circle_factor)
 

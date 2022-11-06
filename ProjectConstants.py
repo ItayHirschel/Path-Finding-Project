@@ -1,5 +1,5 @@
+import pygame
 
-from enum import Enum
 # Constants
 
 PygameConstants = {
@@ -14,7 +14,7 @@ PygameConstants = {
 VisGlobals = {
     "vertex size" : 25,
     "edge size" : 7,
-    "radio button size": 10
+    
 }
 
 MatrixGlobals = {
@@ -43,3 +43,10 @@ UNTOUCHED_COLOR = WHITE
 OFF_COLOR = DARK_GREY
 TOUCHED_COLOR = GREEN
 FINISHED_COLOR = RED
+
+#constants
+
+radio_button_size = 10.0
+radio_inner_circle_factor = 0.2
+
+FONT_SIZE = 13
