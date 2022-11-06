@@ -1,0 +1,59 @@
+from ProjectConstants import *
+from enum import Enum
+
+
+class AbstractNode:
+
+    class Mode(Enum):
+        NOT_TOUCHED = 0
+        WORKED = 1
+        FINISHED = 2
+    
+    def __init__(self, x_pos, y_pos, shape, color):
+        self.x_coor = x_pos
+        self.y_coor = y_pos
+        self.shape = shape
+        self.color = color
+        self.is_on = True
+        self.is_hovered = False
+        self.state = AbstractNode.Mode.NOT_TOUCHED
+        self.prev = None
+
+    
+    def move_to(self, x_pos : int, y_pos : int) -> None:
+        if (0 <= x_pos < PygameConstants["WIDTH"]) and (0 <= x_pos < PygameConstants["HEIGHT"]):
+            self.x_coor = x_pos
+            self.y_coor = y_pos
+    
+    
+    
+    def __raise_state(self, new_state : Mode) -> None:
+        if new_state > self.state:
+            self.state = new_state
+
+    def touch(self) -> None:
+        if AbstractNode.Mode.WORKED > self.state:
+            self.state = AbstractNode.Mode.WORKED
+            self.color = TOUCHED_COLOR
+
+    
+    def finish(self) -> None:
+        if AbstractNode.Mode.FINISHED > self.state:
+            self.state = AbstractNode.Mode.FINISHED
+            self.color = FINISHED_COLOR
+
+    def flip(self) -> None:
+        if self.is_on:
+            self.is_on = False
+            self.color = OFF_COLOR
+        else:
+            self.is_on = True
+            self.color = UNTOUCHED_COLOR
+    
+    def hov_flip(self) -> None:
+        if self.is_hovered == True:
+            self.is_hovered = False
+        else :
+            self.is_hovered = True
+    
+    
