@@ -9,12 +9,13 @@ class WorkMode():
     ON_OFF_MODE = 1
     STERILE = 2
 
+
+
 pygame.init()
 
-# SCREEN CREATION
 
-WIN = pygame.display.set_mode((PygameConstants["WIDTH"], PygameConstants["HEIGHT"]))
-pygame.display.set_caption(PygameConstants["SCREEN_TITLE"])
+
+
 
 # FONTS
 
@@ -33,17 +34,17 @@ def handel_mouse_left_key(work_mode : RadioButton, node : MatrixGraph.InnerNode)
             node.flip()
 
 
-def blit_graph(graph):
+def blit_graph(screen, graph):
     for node in graph.get_vertices():
         color = node.color
         if (node.is_hovered) : 
             color = (int(node.color[0] * SHADE_FACTOR), int(node.color[1] * SHADE_FACTOR),int(node.color[2] * SHADE_FACTOR))
-        pygame.draw.rect(WIN, color, (node.x_coor, node.y_coor, VisGlobals["vertex size"], VisGlobals["vertex size"]))
+        pygame.draw.rect(screen, color, (node.x_coor, node.y_coor, VisGlobals["vertex size"], VisGlobals["vertex size"]))
 
-def draw_screen(graph, Printables):
-    WIN.fill(BLACK)
+def draw_screen(screen, graph, Printables):
+    screen.fill(BLACK)
 
-    blit_graph(graph)
+    blit_graph(screen, graph)
 
     for printable in Printables:
         printable.blit()
@@ -52,14 +53,14 @@ def draw_screen(graph, Printables):
 
 # MAINLOOP
 
-def mainloop(graph):
+def mainloop(graph, screen):
 
     work_modes = [
         RadioButton.Option("toggle button", WorkMode.ON_OFF_MODE, 650, 500),
         RadioButton.Option("sterile mode", WorkMode.STERILE, 650, 530),
     ]
 
-    WORK_MODE = RadioButton(WIN, DEFAULT_FONT, work_modes, 0)
+    WORK_MODE = RadioButton(screen, DEFAULT_FONT, work_modes, 0)
 
     PRINTABLES = [WORK_MODE]
 
@@ -86,7 +87,7 @@ def mainloop(graph):
                     handel_mouse_left_key(WORK_MODE, node_hovered)
                     
 
-        draw_screen(graph, PRINTABLES)
+        draw_screen(screen, graph, PRINTABLES)
         
 
     pygame.quit()
@@ -94,7 +95,11 @@ def mainloop(graph):
 
 if __name__ == "__main__":
 
+    # SCREEN CREATION
+    WIN = pygame.display.set_mode((PygameConstants["WIDTH"], PygameConstants["HEIGHT"]))
+    pygame.display.set_caption(PygameConstants["SCREEN_TITLE"])
+
     graph = MatrixGraph()
 
-    mainloop(graph)
+    mainloop(graph, WIN)
 
