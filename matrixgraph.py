@@ -5,6 +5,7 @@ from printable import Printable
 import pygame
 from colorpallete import *
 
+
 class MatrixGraph(Printable):
 
 
@@ -23,6 +24,9 @@ class MatrixGraph(Printable):
                 color = darken(color)
             
             pygame.draw.rect(self.surface, color, self.rect)
+        
+
+
 
         
     def __init__(self, surface : pygame.Surface):

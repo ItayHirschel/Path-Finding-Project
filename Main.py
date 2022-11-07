@@ -6,6 +6,8 @@ from pushbutton import PushButton
 from eventhandlers import *
 from colorpallete import *
 from textbox import TextBox
+from printable import Printable
+from clickable import Clickable
 
 # WORK MODES
 
@@ -13,21 +15,6 @@ class WorkMode():
     STERILE = 0
     ON_OFF_MODE = 1
 
-
-
-
-def dec_size():
-    if MatrixGlobals["graph size"][0] > MIN_GRAPH_SIZE:
-        MatrixGlobals["graph size"][0] -= 1
-        print(MatrixGlobals["graph size"][0]) 
-        adjust_node_size()
-
-
-def inc_size():
-    if MatrixGlobals["graph size"][0] < MAX_GRAPH_SIZE:
-        MatrixGlobals["graph size"][0] += 1
-        print(MatrixGlobals["graph size"][0]) 
-        adjust_node_size()
     
 
 pygame.init()
@@ -44,22 +31,22 @@ def draw_screen(screen, graph, Printables):
 
 def mainloop(graph : MatrixGraph):
     screen = graph.surface
-    graph_size = MatrixGlobals["graph size"]
     
     work_modes = [
         RadioButton.Option("sterile mode", WorkMode.STERILE, 650, 530),
-        RadioButton.Option("toggle button", WorkMode.ON_OFF_MODE, 650, 500),
+        RadioButton.Option("toggle button", WorkMode.ON_OFF_MODE, 650, 500)
     ]
 
     # declare on screen objects
     WORK_MODE = RadioButton(screen, DEFAULT_FONT, work_modes, 0)
     RESET_BUTTON = PushButton(screen, DEFAULT_FONT, 700, 25, 180, 30, "reset graph", lambda : graph.graph_boot())
-    GRAPH_SIZE_TXT = TextBox(screen, 700, 100, DEFAULT_FONT, VisGlobals["graph size txt box"], VisGlobals["graph size txt box"], text = graph_size)
+    GRAPH_SIZE_TXT = TextBox(screen, 700, 100, DEFAULT_FONT, VisGlobals["graph size txt box"], VisGlobals["graph size txt box"], text = MatrixGlobals["graph size"])
     DECREASE_SIZE_BUTTON = PushButton(screen, DEFAULT_FONT, 650, 100, VisGlobals["graph size txt box"], VisGlobals["graph size txt box"], "-", dec_size)
     INCREASE_SIZE_BUTTON = PushButton(screen, DEFAULT_FONT, 750, 100, VisGlobals["graph size txt box"], VisGlobals["graph size txt box"], "+", inc_size)
 
-    PRINTABLES = [WORK_MODE, RESET_BUTTON, graph, GRAPH_SIZE_TXT, DECREASE_SIZE_BUTTON, INCREASE_SIZE_BUTTON]
-    CLICKABLES = [RESET_BUTTON, DECREASE_SIZE_BUTTON, INCREASE_SIZE_BUTTON]
+
+    PRINTABLES : list[Printable] = [WORK_MODE, RESET_BUTTON, graph, GRAPH_SIZE_TXT, DECREASE_SIZE_BUTTON, INCREASE_SIZE_BUTTON]
+    CLICKABLES : list[Clickable]= [RESET_BUTTON, DECREASE_SIZE_BUTTON, INCREASE_SIZE_BUTTON]
 
     clock = pygame.time.Clock()
     run = True

@@ -1,8 +1,9 @@
 import pygame
 from ProjectConstants import *
 from textbox import TextBox
+from clickable import Clickable
 
-class PushButton(TextBox):
+class PushButton(TextBox, Clickable):
     def __init__(self, surface : pygame.Surface, font, x_pos, y_pos, width, height, text, func, bg_color = WHITE, txt_color = BLACK):
         super().__init__(surface, x_pos, y_pos, font, width, height, text = text,  bg_color = bg_color, txt_color = txt_color)
         self.func = func
