@@ -25,12 +25,15 @@ class MatrixGraph:
     def locate(self, x_pos, y_pos):
         return (int((y_pos - 10) // self.HeightSpread), int((x_pos - 10) // self.WidthSpread))
     
-    def hover(self, row, col, prev):
-        if (0 <= row < self.rows) and (0 <= col < self.columns):
-            curr = self.vertices[row][col]
+    def get_node_by_coor(self, x, y):
+        row, column = self.locate(x, y)
+        if (0 <= row < self.rows) and (0 <= column < self.columns):
+            return self.vertices[row][column]
+        return None
+    
+    def hover(self, curr, prev):
+        if (curr != None):
             curr.hov_flip()
-        else:
-            curr = None
         if (prev != None):
             prev.hov_flip()
         return curr

@@ -26,13 +26,15 @@ DEFAULT_FONT = pygame.font.SysFont( "cambria", FONT_SIZE)
 
 
 def handel_mouse_left_key(work_mode : RadioButton, node : MatrixGraph.InnerNode):
-
     work_mode.handel_click()
-
     if work_mode.get_mode() == WorkMode.ON_OFF_MODE:
         if None != node:
             node.flip()
 
+def mouse_motion_handler(work_mode : RadioButton, node : MatrixGraph.InnerNode):
+    if work_mode.get_mode() == WorkMode.ON_OFF_MODE:
+        if None != node and pygame.mouse.get_pressed()[MOUSE_KEYS.LEFT_KEY]:
+            node.flip()
 
 def blit_graph(screen, graph):
     for node in graph.get_vertices():
@@ -53,7 +55,7 @@ def draw_screen(screen, graph, Printables):
 
 # MAINLOOP
 
-def mainloop(graph, screen):
+def mainloop(graph : MatrixGraph, screen : pygame.Surface):
 
     work_modes = [
         RadioButton.Option("toggle button", WorkMode.ON_OFF_MODE, 650, 500),
@@ -79,12 +81,16 @@ def mainloop(graph, screen):
             if event.type == pygame.MOUSEMOTION:
                 (x,y) = pygame.mouse.get_pos()
                 (ro, col) = graph.locate(x,y)
-                node_hovered = graph.hover(ro, col, node_hovered)
+                on_node = graph.get_node_by_coor(x, y)
+                if on_node != node_hovered:
+                    node_hovered = graph.hover(on_node, node_hovered)
+                    mouse_motion_handler(WORK_MODE, node_hovered)
             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 key_pressed = pygame.mouse.get_pressed()
                 if (key_pressed[MOUSE_KEYS.LEFT_KEY]):
                     handel_mouse_left_key(WORK_MODE, node_hovered)
+                node_hovered = graph.hover(node_hovered, node_hovered)
                     
 
         draw_screen(screen, graph, PRINTABLES)
