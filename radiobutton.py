@@ -44,9 +44,14 @@ class RadioButton:
         return self.choice.mode
         
     def blit(self):
-        
+        x,y = pygame.mouse.get_pos()
         for opt in self.options:
-            pygame.draw.circle(self.surface, WHITE,(opt.x_pos,opt.y_pos), opt.size)
+            color = WHITE
+
+            if opt.is_in(x, y):
+                color = darken(color)
+            
+            pygame.draw.circle(self.surface, color,(opt.x_pos,opt.y_pos), opt.size)
 
             text = self.font.render(opt.opt_name, True, WHITE, BLACK)
             text_rect = text.get_rect()

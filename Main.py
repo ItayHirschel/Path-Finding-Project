@@ -18,17 +18,8 @@ pygame.init()
 DEFAULT_FONT = pygame.font.SysFont( "cambria", FONT_SIZE)
 
 
-def blit_graph(screen, graph):
-    for node in graph.get_vertices():
-        color = node.color
-        if (node.is_hovered) : 
-            color = (int(node.color[0] * SHADE_FACTOR), int(node.color[1] * SHADE_FACTOR),int(node.color[2] * SHADE_FACTOR))
-        pygame.draw.rect(screen, color, (node.x_coor, node.y_coor, VisGlobals["vertex size"], VisGlobals["vertex size"]))
-
 def draw_screen(screen, graph, Printables):
     screen.fill(BLACK)
-
-    graph.blit()
 
     for printable in Printables:
         printable.blit()
@@ -44,12 +35,11 @@ def mainloop(graph : MatrixGraph):
         RadioButton.Option("sterile mode", WorkMode.STERILE, 650, 530),
     ]
 
-    def reset_graph():
-        graph.graph_reset()
 
     WORK_MODE = RadioButton(screen, DEFAULT_FONT, work_modes, 0)
-    RESET_BUTTON = PushButton(screen, DEFAULT_FONT, 650, 750, 100, 150, "reset graph", reset_graph)
-    PRINTABLES = [WORK_MODE, RESET_BUTTON]
+    RESET_BUTTON = PushButton(screen, DEFAULT_FONT, 650, 750, 100, 150, "reset graph", lambda : graph.graph_boot())
+
+    PRINTABLES = [WORK_MODE, RESET_BUTTON, graph]
     CLICKABLES = [RESET_BUTTON]
 
     clock = pygame.time.Clock()
@@ -75,11 +65,9 @@ def mainloop(graph : MatrixGraph):
                 key_pressed = pygame.mouse.get_pressed()
                 if (key_pressed[MOUSE_KEYS.LEFT_KEY]):
                     handel_mouse_left_key(WORK_MODE, node_hovered, CLICKABLES)
-                    
-
+                
         draw_screen(screen, graph, PRINTABLES)
         
-
     pygame.quit()
 
 

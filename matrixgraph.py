@@ -12,7 +12,7 @@ class MatrixGraph(Printable):
 
         def __init__(self, surface : pygame.Surface, x_pos, y_pos, color_scheme = [UNTOUCHED_COLOR, TOUCHED_COLOR, FINISHED_COLOR, OFF_COLOR]):
             super().__init__(x_pos, y_pos)
-            self.rect = pygame.Rect((x_pos, y_pos), (VisGlobals["vertex size"], VisGlobals["vertex size"]))
+            self.rect = pygame.Rect(x_pos, y_pos, VisGlobals["vertex size"], VisGlobals["vertex size"])
             self.color_scheme = color_scheme
             self.surface = surface
         
@@ -25,13 +25,9 @@ class MatrixGraph(Printable):
             pygame.draw.rect(self.surface, color, self.rect)
 
         
-    def __init__(self, surface : pygame.Surface, rows = MatrixGlobals["rows"], columns = MatrixGlobals["columns"]):
-        self.rows = rows
-        self.columns = columns
+    def __init__(self, surface : pygame.Surface):
         self.surface = surface
-        self.WidthSpread = (self.surface.get_height() - 10) / columns
-        self.HeightSpread = (self.surface.get_width() - 10) / rows
-        self.vertices = [[MatrixGraph.InnerNode(surface, 10 + x_ind * self.WidthSpread, 10 + y_ind * self.HeightSpread) for x_ind in range(columns)] for y_ind in range(rows)]
+        self.graph_boot()
 
     def get_vertices(self):
         return [y for row in self.vertices for y in row]
@@ -45,7 +41,7 @@ class MatrixGraph(Printable):
             return self.vertices[row][column]
         return None
     
-    def graph_reset(self):
+    def graph_boot(self):
         self.rows = MatrixGlobals["rows"]
         self.columns = MatrixGlobals["columns"]
         self.WidthSpread = (PygameConstants["GRAPH WIDTH"] - 10) / self.columns
