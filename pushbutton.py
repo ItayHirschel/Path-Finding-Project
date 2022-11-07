@@ -1,12 +1,10 @@
 import pygame
 from ProjectConstants import *
+from textbox import TextBox
 
-class PushButton:
-    def __init__(self, surface : pygame.Surface, font, left, right, top, bottom, text, func):
-        self.rect = pygame.Rect(left, top, right - left, bottom - top)
-        self.text = text
-        self.surface = surface
-        self.font = font
+class PushButton(TextBox):
+    def __init__(self, surface : pygame.Surface, font, x_pos, y_pos, width, height, text, func, bg_color = WHITE, txt_color = BLACK):
+        super().__init__(surface, x_pos, y_pos, font, width, height, text = text,  bg_color = bg_color, txt_color = txt_color)
         self.func = func
     
     def is_in(self, x, y):
@@ -14,14 +12,11 @@ class PushButton:
     
     def blit(self):
         x,y = pygame.mouse.get_pos()
-        color = WHITE
+        orig_color = self.bg_color
         if (self.is_in(x, y)):
-            color = (int(color[0] * SHADE_FACTOR), int(color[1] * SHADE_FACTOR),int(color[2] * SHADE_FACTOR))
-        pygame.draw.rect(self.surface, color, self.rect)
-        text = self.font.render(self.text, True, BLACK, color)
-        text_rect = text.get_rect()
-        text_rect.center =  self.rect.center
-        self.surface.blit(text, text_rect)
+            self.bg_color = darken(self.bg_color)
+        super().blit()
+        self.bg_color = orig_color
     
     def handle_click(self):
         x, y = pygame.mouse.get_pos()

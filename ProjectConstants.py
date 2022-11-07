@@ -15,13 +15,18 @@ PygameConstants = {
 VisGlobals = {
     "vertex size" : 25,
     "edge size" : 7,
-    
+    "graph size txt box" : 40
 }
 
 MatrixGlobals = {
-    "rows" : 20,
-    "columns" : 20
+    "graph size" : [20]
 }
+
+MAX_GRAPH_SIZE = 40
+MIN_GRAPH_SIZE = 5
+
+def adjust_node_size():
+    VisGlobals["vertex size"] = PygameConstants["GRAPH WIDTH"] / MatrixGlobals["graph size"][0] - 3
 
 class MOUSE_KEYS():
         LEFT_KEY = 0

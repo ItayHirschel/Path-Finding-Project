@@ -42,8 +42,8 @@ class MatrixGraph(Printable):
         return None
     
     def graph_boot(self):
-        self.rows = MatrixGlobals["rows"]
-        self.columns = MatrixGlobals["columns"]
+        self.rows = MatrixGlobals["graph size"][0]
+        self.columns = MatrixGlobals["graph size"][0]
         self.WidthSpread = (PygameConstants["GRAPH WIDTH"] - 10) / self.columns
         self.HeightSpread = (PygameConstants["GRAPH HEIGHT"] - 10) / self.rows
         self.vertices = [[MatrixGraph.InnerNode(self.surface, 10 + x_ind * self.WidthSpread, 10 + y_ind * self.HeightSpread) for x_ind in range(self.columns)] for y_ind in range(self.rows)]
