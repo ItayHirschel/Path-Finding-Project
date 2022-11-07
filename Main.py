@@ -2,6 +2,7 @@ import pygame
 from ProjectConstants import *
 from matrixgraph import MatrixGraph
 from  radiobutton import RadioButton
+from pushbutton import PushButton
 
 # WORK MODES
 
@@ -24,12 +25,14 @@ DEFAULT_FONT = pygame.font.SysFont( "cambria", FONT_SIZE)
 
 
 
-
-def handel_mouse_left_key(work_mode : RadioButton, node : MatrixGraph.InnerNode):
+def handel_mouse_left_key(work_mode : RadioButton, node : MatrixGraph.InnerNode, clickables):
     work_mode.handel_click()
     if work_mode.get_mode() == WorkMode.ON_OFF_MODE:
         if None != node:
             node.flip()
+        
+        for clickable in clickables:
+            clickable.handle_click()
 
 def mouse_motion_handler(work_mode : RadioButton, node : MatrixGraph.InnerNode):
     if work_mode.get_mode() == WorkMode.ON_OFF_MODE:
@@ -62,9 +65,13 @@ def mainloop(graph : MatrixGraph, screen : pygame.Surface):
         RadioButton.Option("sterile mode", WorkMode.STERILE, 650, 530),
     ]
 
-    WORK_MODE = RadioButton(screen, DEFAULT_FONT, work_modes, 0)
+    def reset_graph():
+        graph.graph_reset()
 
-    PRINTABLES = [WORK_MODE]
+    WORK_MODE = RadioButton(screen, DEFAULT_FONT, work_modes, 0)
+    RESET_BUTTON = PushButton(screen, DEFAULT_FONT, 650, 750, 100, 150, "reset graph", reset_graph)
+    PRINTABLES = [WORK_MODE, RESET_BUTTON]
+    CLICKABLES = [RESET_BUTTON]
 
     clock = pygame.time.Clock()
     run = True
@@ -80,7 +87,6 @@ def mainloop(graph : MatrixGraph, screen : pygame.Surface):
 
             if event.type == pygame.MOUSEMOTION:
                 (x,y) = pygame.mouse.get_pos()
-                (ro, col) = graph.locate(x,y)
                 on_node = graph.get_node_by_coor(x, y)
                 if on_node != node_hovered:
                     node_hovered = graph.hover(on_node, node_hovered)
@@ -89,7 +95,7 @@ def mainloop(graph : MatrixGraph, screen : pygame.Surface):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 key_pressed = pygame.mouse.get_pressed()
                 if (key_pressed[MOUSE_KEYS.LEFT_KEY]):
-                    handel_mouse_left_key(WORK_MODE, node_hovered)
+                    handel_mouse_left_key(WORK_MODE, node_hovered, CLICKABLES)
                 node_hovered = graph.hover(node_hovered, node_hovered)
                     
 
