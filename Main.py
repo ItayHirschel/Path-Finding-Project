@@ -9,8 +9,9 @@ from colorpallete import *
 # WORK MODES
 
 class WorkMode():
+    STERILE = 0
     ON_OFF_MODE = 1
-    STERILE = 2
+    
 
 
 
@@ -31,8 +32,8 @@ def draw_screen(screen, graph, Printables):
 def mainloop(graph : MatrixGraph):
     screen = graph.surface
     work_modes = [
-        RadioButton.Option("toggle button", WorkMode.ON_OFF_MODE, 650, 500),
         RadioButton.Option("sterile mode", WorkMode.STERILE, 650, 530),
+        RadioButton.Option("toggle button", WorkMode.ON_OFF_MODE, 650, 500),
     ]
 
 
