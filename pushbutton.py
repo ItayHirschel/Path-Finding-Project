@@ -10,7 +10,7 @@ class PushButton:
         self.func = func
     
     def is_in(self, x, y):
-        return (self.rect.left <= x <= self.rect.right) and (self.rect.top <= y <= self.rect.bottom)
+        return self.rect.collidepoint(x, y)
     
     def blit(self):
         x,y = pygame.mouse.get_pos()

@@ -1,4 +1,5 @@
 import pygame
+from colorpallete import *
 
 # Constants
 
@@ -27,16 +28,6 @@ class MOUSE_KEYS():
         WHEEL_KEY = 1
         RIGHT_KEY = 2
 
-# Colors
-WHITE = (255,255,255)
-BLACK = (0,0,0)
-RED = (255,0,0)
-BLUE = (0,0,255)
-GREEN = (0,255,0)
-DARK_GREY = (50, 50, 50)
-LIGHT_GREY = (150, 150, 150)
-
-SHADE_FACTOR = 0.8
 
 HOVERED_COLOR = LIGHT_GREY
 UNTOUCHED_COLOR = WHITE

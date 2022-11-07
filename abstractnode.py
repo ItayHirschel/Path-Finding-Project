@@ -1,21 +1,18 @@
 from ProjectConstants import *
-from enum import Enum
+from enum import IntEnum
 
 
 class AbstractNode:
 
-    class Mode(Enum):
+    class Mode(IntEnum):
+        OFF = -1
         NOT_TOUCHED = 0
         WORKED = 1
         FINISHED = 2
     
-    def __init__(self, x_pos, y_pos, shape, color):
+    def __init__(self, x_pos, y_pos):
         self.x_coor = x_pos
         self.y_coor = y_pos
-        self.shape = shape
-        self.color = color
-        self.is_on = True
-        self.is_hovered = False
         self.state = AbstractNode.Mode.NOT_TOUCHED
         self.prev = None
 
@@ -43,17 +40,9 @@ class AbstractNode:
             self.color = FINISHED_COLOR
 
     def flip(self) -> None:
-        if self.is_on:
-            self.is_on = False
-            self.color = OFF_COLOR
+        if self.state == AbstractNode.Mode.OFF:
+            self.state = AbstractNode.Mode.NOT_TOUCHED
         else:
-            self.is_on = True
-            self.color = UNTOUCHED_COLOR
-    
-    def hov_flip(self) -> None:
-        if self.is_hovered == True:
-            self.is_hovered = False
-        else :
-            self.is_hovered = True
+            self.state = AbstractNode.Mode.OFF
     
     

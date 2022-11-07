@@ -3,6 +3,8 @@ from ProjectConstants import *
 from matrixgraph import MatrixGraph
 from  radiobutton import RadioButton
 from pushbutton import PushButton
+from eventhandlers import *
+from colorpallete import *
 
 # WORK MODES
 
@@ -13,31 +15,8 @@ class WorkMode():
 
 
 pygame.init()
-
-
-
-
-
-# FONTS
-
 DEFAULT_FONT = pygame.font.SysFont( "cambria", FONT_SIZE)
 
-
-
-
-def handel_mouse_left_key(work_mode : RadioButton, node : MatrixGraph.InnerNode, clickables):
-    work_mode.handel_click()
-    if work_mode.get_mode() == WorkMode.ON_OFF_MODE:
-        if None != node:
-            node.flip()
-        
-        for clickable in clickables:
-            clickable.handle_click()
-
-def mouse_motion_handler(work_mode : RadioButton, node : MatrixGraph.InnerNode):
-    if work_mode.get_mode() == WorkMode.ON_OFF_MODE:
-        if None != node and pygame.mouse.get_pressed()[MOUSE_KEYS.LEFT_KEY]:
-            node.flip()
 
 def blit_graph(screen, graph):
     for node in graph.get_vertices():
@@ -49,7 +28,7 @@ def blit_graph(screen, graph):
 def draw_screen(screen, graph, Printables):
     screen.fill(BLACK)
 
-    blit_graph(screen, graph)
+    graph.blit()
 
     for printable in Printables:
         printable.blit()
@@ -58,8 +37,8 @@ def draw_screen(screen, graph, Printables):
 
 # MAINLOOP
 
-def mainloop(graph : MatrixGraph, screen : pygame.Surface):
-
+def mainloop(graph : MatrixGraph):
+    screen = graph.surface
     work_modes = [
         RadioButton.Option("toggle button", WorkMode.ON_OFF_MODE, 650, 500),
         RadioButton.Option("sterile mode", WorkMode.STERILE, 650, 530),
@@ -82,21 +61,20 @@ def mainloop(graph : MatrixGraph, screen : pygame.Surface):
 
         for event in pygame.event.get():
 
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT:                                           # QUIT
                 run = False
 
-            if event.type == pygame.MOUSEMOTION:
+            if event.type == pygame.MOUSEMOTION:                                    # MOUSE MOTION
                 (x,y) = pygame.mouse.get_pos()
                 on_node = graph.get_node_by_coor(x, y)
                 if on_node != node_hovered:
-                    node_hovered = graph.hover(on_node, node_hovered)
+                    node_hovered = on_node
                     mouse_motion_handler(WORK_MODE, node_hovered)
             
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:                                # MOUSE BUTTON
                 key_pressed = pygame.mouse.get_pressed()
                 if (key_pressed[MOUSE_KEYS.LEFT_KEY]):
                     handel_mouse_left_key(WORK_MODE, node_hovered, CLICKABLES)
-                node_hovered = graph.hover(node_hovered, node_hovered)
                     
 
         draw_screen(screen, graph, PRINTABLES)
@@ -111,7 +89,7 @@ if __name__ == "__main__":
     WIN = pygame.display.set_mode((PygameConstants["WIDTH"], PygameConstants["HEIGHT"]))
     pygame.display.set_caption(PygameConstants["SCREEN_TITLE"])
 
-    graph = MatrixGraph()
+    graph = MatrixGraph(WIN)
 
-    mainloop(graph, WIN)
+    mainloop(graph)
 
