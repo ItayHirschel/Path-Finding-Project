@@ -9,6 +9,7 @@ class AbstractNode:
         NOT_TOUCHED = 0
         WORKED = 1
         FINISHED = 2
+        PART_OF_SOL = 3
     
     def __init__(self, x_pos, y_pos):
         self.x_coor = x_pos
@@ -31,13 +32,14 @@ class AbstractNode:
     def touch(self) -> None:
         if AbstractNode.Mode.WORKED > self.state:
             self.state = AbstractNode.Mode.WORKED
-            self.color = TOUCHED_COLOR
 
     
     def finish(self) -> None:
         if AbstractNode.Mode.FINISHED > self.state:
             self.state = AbstractNode.Mode.FINISHED
-            self.color = FINISHED_COLOR
+    
+    def assign_to_sol(self) -> None:
+        self.state = AbstractNode.Mode.PART_OF_SOL
 
     def flip(self) -> None:
         if self.state == AbstractNode.Mode.OFF:

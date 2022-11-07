@@ -2,6 +2,7 @@ import pygame
 from ProjectConstants import *
 from textbox import TextBox
 from clickable import Clickable
+from workmode import WORK_MODE, WorkMode
 
 class PushButton(TextBox, Clickable):
     def __init__(self, surface : pygame.Surface, font, x_pos, y_pos, width, height, text, func, bg_color = WHITE, txt_color = BLACK):
@@ -20,6 +21,7 @@ class PushButton(TextBox, Clickable):
         self.bg_color = orig_color
     
     def handle_click(self):
-        x, y = pygame.mouse.get_pos()
-        if self.is_in(x, y):
-            return self.func()
+        if WORK_MODE.get_mode() != WorkMode.STERILE:
+            x, y = pygame.mouse.get_pos()
+            if self.is_in(x, y):
+                return self.func()
