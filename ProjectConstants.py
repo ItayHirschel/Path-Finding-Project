@@ -19,7 +19,7 @@ VisGlobals = {
 }
 
 MatrixGlobals = {
-    "graph size" : [20]
+    "graph size" : [10]
 }
 
 MAX_GRAPH_SIZE = 40
@@ -40,7 +40,7 @@ OFF_COLOR = DARK_GREY
 TOUCHED_COLOR = RED
 FINISHED_COLOR = BLACK
 SOL_COLOR = GREEN
-
+DEST_COLOR = YELLOW
 #constants
 
 radio_button_size = 10.0

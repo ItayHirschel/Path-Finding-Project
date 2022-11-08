@@ -22,11 +22,15 @@ class MatrixGraph(Printable, IGraph, Clickable):
             self.row = row
             self.column = column
 
-        def blit(self, is_starting):
+        def blit(self, is_starting, is_destination):
             x,y = pygame.mouse.get_pos()
             color = self.color_scheme[int(self.state)]
+
             if is_starting:
                 color = BLUE
+            if is_destination:
+                color = DEST_COLOR
+
             if self.rect.collidepoint(x, y):
                 color = darken(color)
             pygame.draw.rect(self.surface, color, self.rect)
@@ -59,7 +63,8 @@ class MatrixGraph(Printable, IGraph, Clickable):
         self.columns = MatrixGlobals["graph size"][0]
         self.WidthSpread = (PygameConstants["GRAPH WIDTH"] - 10) / self.columns
         self.HeightSpread = (PygameConstants["GRAPH HEIGHT"] - 10) / self.rows
-        self.vertices : list[list[MatrixGraph.InnerNode]] = [[MatrixGraph.InnerNode(self.surface, 10 + x_ind * self.WidthSpread, 10 + y_ind * self.HeightSpread, x_ind, y_ind) for x_ind in range(self.columns)] for y_ind in range(self.rows)]
+        self.vertices : list[list[MatrixGraph.InnerNode]] = [
+            [MatrixGraph.InnerNode(self.surface, 10 + row * self.WidthSpread, 10 + col * self.HeightSpread, row, col) for row in range(self.columns)] for col in range(self.rows)]
         self.starting_points : list[MatrixGraph.InnerNode] = []
         self.destination : MatrixGraph.InnerNode = None
 
@@ -68,70 +73,88 @@ class MatrixGraph(Printable, IGraph, Clickable):
         node = self.get_node_by_coor(x, y)
 
         if None != node:
-
-            if WORK_MODE.get_mode() == WorkMode.CHOOSE_START and node.state >= AbstractNode.Mode.NOT_TOUCHED:
+            mode = WORK_MODE.get_mode()
+            if mode == WorkMode.CHOOSE_START and node.state >= AbstractNode.Mode.NOT_TOUCHED:
                 if node in self.starting_points:
                     self.starting_points.remove(node)
                 else:
                     self.starting_points.append(node)
 
-            elif WORK_MODE.get_mode() == WorkMode.ON_OFF_MODE:
-                if node not in self.starting_points:
+            elif mode == WorkMode.ON_OFF_MODE:
+                if node not in self.starting_points and node != self.destination:
                     node.flip()
+            
+            elif mode == WorkMode.CHOOSE_DEST:
+                if node not in self.starting_points and node.state == AbstractNode.Mode.NOT_TOUCHED:
+                    self.destination = node
 
             
 
     def blit(self):
         for node in self.get_vertices():
-            node.blit(node in self.starting_points)
+            node.blit(node in self.starting_points, node == self.destination)
     
-    def get_neighbors(self, node : InnerNode) -> list[AbstractNode]:
+    def get_neighbors(self, node : AbstractNode) -> list[AbstractNode]:
         ls = []
-        if node == self.vertices[node.row, node.column]:
+        row = node.row
+        col = node.column
+        node = self.vertices[row][col]
+        if node != None:
 
-            if node.row < self.rows:
-                neighbor = self.vertices[node.row + 1, node.column]
+            if node.row < self.rows - 1:
+                neighbor = self.vertices[node.row + 1][node.column]
                 if neighbor.state == AbstractNode.Mode.NOT_TOUCHED:
-                    neighbor.prev = node
+                    neighbor.prev = (row, col)
                     ls.append(neighbor)
 
             if node.column > 0:
-                neighbor = self.vertices[node.row , node.column - 1]
+                neighbor = self.vertices[node.row][node.column - 1]
                 if neighbor.state == AbstractNode.Mode.NOT_TOUCHED:
-                    neighbor.prev = node
+                    neighbor.prev = (row, col)
                     ls.append(neighbor)
 
             if node.row > 0:
-                neighbor = self.vertices[node.row - 1, node.column]
+                neighbor = self.vertices[node.row - 1][node.column]
+                
                 if neighbor.state == AbstractNode.Mode.NOT_TOUCHED:
-                    neighbor.prev = node
+                    neighbor.prev = (row, col)
                     ls.append(neighbor)
 
-            if node.column < self.columns:
-                neighbor = self.vertices[node.row , node.column + 1]
+            if node.column < self.columns - 1:
+                neighbor = self.vertices[node.row][node.column + 1]
                 if neighbor.state == AbstractNode.Mode.NOT_TOUCHED:
-                    neighbor.prev = node
+                    neighbor.prev = (row, col)
                     ls.append(neighbor)
+        
         return ls
 
+    def printer(self):
+        print(self.get_starters())
+        print(self.destination)
+    
     def touch(self, node : InnerNode):
-        node.touch()
+        self.vertices[node.column][node.row].touch()
     
     def finish(self, node : InnerNode):
-        node.finish()
+        self.vertices[node.column][node.row].finish()
     
     def goal_reached(self):
         return self.destination.state >= AbstractNode.Mode.WORKED
     
     def get_starters(self) -> list[AbstractNode]:
-        return self.starting_points.copy()
+        return self.starting_points
     
     def draw_solution(self):
         node = self.destination
 
         while None != node:
+            print("!", node.row, node.column)
             node.assign_to_sol()
-            node = node.prev
+            if node.prev != None:
+                node = self.vertices[node.prev[1]][ node.prev[0]]
+            else:
+                node = None
+
 
 
     

@@ -33,6 +33,9 @@ class AbstractRadio():
 
     def get_mode(self):
         return self.choice.mode
+    
+    def choose(self, index):
+        self.choice = self.options[index]
         
     def blit(self):
         x,y = pygame.mouse.get_pos()

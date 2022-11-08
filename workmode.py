@@ -19,11 +19,15 @@ class WorkMode():
     STERILE = 0
     ON_OFF_MODE = 1
     CHOOSE_START = 2
+    CHOOSE_DEST = 3
+    PLAY = 4
 
 work_modes = [
     WorkModeButton.Option("sterile mode", WorkMode.STERILE, 650, 570),
-    WorkModeButton.Option("toggle button", WorkMode.ON_OFF_MODE, 650, 540),
-    WorkModeButton.Option("choose stating point", WorkMode.CHOOSE_START, 650, 510)
+    WorkModeButton.Option("toggle button on/off", WorkMode.ON_OFF_MODE, 650, 540),
+    WorkModeButton.Option("choose stating point", WorkMode.CHOOSE_START, 650, 510),
+    WorkModeButton.Option("choose destination", WorkMode.CHOOSE_DEST, 650, 480),
+    WorkModeButton.Option("play", WorkMode.PLAY, 650, 450)
 ]
 
 

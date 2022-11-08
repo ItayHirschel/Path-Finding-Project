@@ -30,13 +30,11 @@ class AbstractNode:
             self.state = new_state
 
     def touch(self) -> None:
-        if AbstractNode.Mode.WORKED > self.state:
-            self.state = AbstractNode.Mode.WORKED
+        self.state = AbstractNode.Mode.WORKED
 
     
     def finish(self) -> None:
-        if AbstractNode.Mode.FINISHED > self.state:
-            self.state = AbstractNode.Mode.FINISHED
+        self.state = AbstractNode.Mode.FINISHED
     
     def assign_to_sol(self) -> None:
         self.state = AbstractNode.Mode.PART_OF_SOL

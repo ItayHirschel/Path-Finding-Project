@@ -8,7 +8,7 @@ BLUE = (0,0,255)
 GREEN = (0,255,0)
 DARK_GREY = (50, 50, 50)
 LIGHT_GREY = (150, 150, 150)
-
+YELLOW = (255, 255, 0)
 SHADE_FACTOR = 0.5
 
 def darken(color):
