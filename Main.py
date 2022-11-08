@@ -58,30 +58,29 @@ def mainloop(graph : MatrixGraph):
 
     algo_running = True
     steps = 0
-    fifo_up = False
+    queue_up = False
 
     algorithm = ALGO_CHOICE.get_mode()
 
-    for node in graph.get_vertices():
-        print(node.row, node.column)
     
     while run:
         clock.tick(PygameConstants["FPS"])
 
         if WORK_MODE.get_mode() == WorkMode.PLAY:
 
-            if not fifo_up:
-                algorithm.update_fifo()
-                fifo_up = True
-                print(algorithm.fifo.queue)
+            if not queue_up:
+                algorithm.update_queue()
+                queue_up = True
+
             algo_running = algorithm.step()
             #pygame.time.wait(100)
+            
             if not algo_running:
                 if algorithm.is_success():
                     algorithm.draw_solution()
                 WORK_MODE.choose(0)
+
             steps += 1
-            print(steps)
 
         for event in pygame.event.get():
 
@@ -109,7 +108,7 @@ def mainloop(graph : MatrixGraph):
             algorithm = ALGO_CHOICE.get_mode()(graph)
 
         if not algo_running:
-            algorithm.update_fifo()
+            algorithm.update_queue()
         
         #print(steps)
     pygame.quit()

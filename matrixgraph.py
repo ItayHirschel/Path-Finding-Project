@@ -99,30 +99,30 @@ class MatrixGraph(Printable, IGraph, Clickable):
         row = node.row
         col = node.column
         node = self.vertices[row][col]
+        acceptables = [AbstractNode.Mode.NOT_TOUCHED, AbstractNode.Mode.WORKED]
         if node != None:
 
             if node.row < self.rows - 1:
                 neighbor = self.vertices[node.row + 1][node.column]
-                if neighbor.state == AbstractNode.Mode.NOT_TOUCHED:
+                if neighbor.state in acceptables:
                     neighbor.prev = (row, col)
                     ls.append(neighbor)
 
             if node.column > 0:
                 neighbor = self.vertices[node.row][node.column - 1]
-                if neighbor.state == AbstractNode.Mode.NOT_TOUCHED:
+                if neighbor.state in acceptables:
                     neighbor.prev = (row, col)
                     ls.append(neighbor)
 
             if node.row > 0:
                 neighbor = self.vertices[node.row - 1][node.column]
-                
-                if neighbor.state == AbstractNode.Mode.NOT_TOUCHED:
+                if neighbor.state in acceptables:
                     neighbor.prev = (row, col)
                     ls.append(neighbor)
 
             if node.column < self.columns - 1:
                 neighbor = self.vertices[node.row][node.column + 1]
-                if neighbor.state == AbstractNode.Mode.NOT_TOUCHED:
+                if neighbor.state in acceptables:
                     neighbor.prev = (row, col)
                     ls.append(neighbor)
         
@@ -139,7 +139,10 @@ class MatrixGraph(Printable, IGraph, Clickable):
         self.vertices[node.column][node.row].finish()
     
     def goal_reached(self):
-        return self.destination.state >= AbstractNode.Mode.WORKED
+        bol = False
+        if self.destination != None:
+            bol = self.destination.state >= AbstractNode.Mode.FINISHED
+        return bol
     
     def get_starters(self) -> list[AbstractNode]:
         return self.starting_points

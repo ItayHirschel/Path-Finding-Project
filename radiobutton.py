@@ -9,7 +9,7 @@ class RadioButton(AbstractRadio, Clickable):
         super().__init__(surface, font, option_list, def_choice)
     
     def handle_click(self):
-        if WORK_MODE.get_mode() != WorkMode.STERILE:
+        if WORK_MODE.get_mode() not in [WorkMode.STERILE, WorkMode.PLAY] :
             x, y = pygame.mouse.get_pos()
             for opt in self.options:
                 if opt.is_in(x, y):
