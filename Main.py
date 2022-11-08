@@ -35,23 +35,32 @@ def mainloop(graph : MatrixGraph):
     WORK_MODE.surface = screen
     WORK_MODE.font = DEFAULT_FONT
 
+    alg_options = [
+        RadioButton.Option("BFS scan", BFS_scanner, 650,400),
+        RadioButton.Option("DFS scan", DFS_scanner, 650, 370)
+    ]
+
+    ALGO_CHOICE = RadioButton(screen, DEFAULT_FONT, alg_options, 0)
+
+
     RESET_BUTTON = PushButton(screen, DEFAULT_FONT, 700, 25, 180, 30, "reset graph", lambda : graph.graph_boot())
     GRAPH_SIZE_TXT = TextBox(screen, 700, 100, DEFAULT_FONT, VisGlobals["graph size txt box"], VisGlobals["graph size txt box"], text = MatrixGlobals["graph size"])
     DECREASE_SIZE_BUTTON = PushButton(screen, DEFAULT_FONT, 650, 100, VisGlobals["graph size txt box"], VisGlobals["graph size txt box"], "-", dec_size)
     INCREASE_SIZE_BUTTON = PushButton(screen, DEFAULT_FONT, 750, 100, VisGlobals["graph size txt box"], VisGlobals["graph size txt box"], "+", inc_size)
 
 
-    PRINTABLES : list[Printable] = [WORK_MODE, RESET_BUTTON, graph, GRAPH_SIZE_TXT, DECREASE_SIZE_BUTTON, INCREASE_SIZE_BUTTON]
-    CLICKABLES : list[Clickable]= [WORK_MODE, RESET_BUTTON, DECREASE_SIZE_BUTTON, INCREASE_SIZE_BUTTON, graph]
+    PRINTABLES : list[Printable] = [WORK_MODE, RESET_BUTTON, graph, GRAPH_SIZE_TXT, DECREASE_SIZE_BUTTON, INCREASE_SIZE_BUTTON, ALGO_CHOICE]
+    CLICKABLES : list[Clickable]= [WORK_MODE, RESET_BUTTON, DECREASE_SIZE_BUTTON, INCREASE_SIZE_BUTTON, graph, ALGO_CHOICE]
 
     clock = pygame.time.Clock()
     run = True
     node_hovered = None
 
-    algorithm = BFS_scanner(graph)
     algo_running = True
     steps = 0
     fifo_up = False
+
+    algorithm = ALGO_CHOICE.get_mode()
 
     for node in graph.get_vertices():
         print(node.row, node.column)
@@ -90,11 +99,18 @@ def mainloop(graph : MatrixGraph):
                 key_pressed = pygame.mouse.get_pressed()
                 if (key_pressed[MOUSE_KEYS.LEFT_KEY]):
                     handel_mouse_left_key(CLICKABLES)
+                    
                 
-                if not algo_running:
-                    algorithm.update_fifo()
+                
                 
         draw_screen(screen, graph, PRINTABLES)
+
+        if type(algorithm) != ALGO_CHOICE.get_mode():
+            algorithm = ALGO_CHOICE.get_mode()(graph)
+
+        if not algo_running:
+            algorithm.update_fifo()
+        
         #print(steps)
     pygame.quit()
 
