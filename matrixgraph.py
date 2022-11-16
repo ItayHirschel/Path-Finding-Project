@@ -105,25 +105,21 @@ class MatrixGraph(Printable, IGraph, Clickable):
             if node.row < self.rows - 1:
                 neighbor = self.vertices[node.row + 1][node.column]
                 if neighbor.state in acceptables:
-                    neighbor.prev = (row, col)
                     ls.append(neighbor)
 
             if node.column > 0:
                 neighbor = self.vertices[node.row][node.column - 1]
                 if neighbor.state in acceptables:
-                    neighbor.prev = (row, col)
                     ls.append(neighbor)
 
             if node.row > 0:
                 neighbor = self.vertices[node.row - 1][node.column]
                 if neighbor.state in acceptables:
-                    neighbor.prev = (row, col)
                     ls.append(neighbor)
 
             if node.column < self.columns - 1:
                 neighbor = self.vertices[node.row][node.column + 1]
-                if neighbor.state in acceptables:
-                    neighbor.prev = (row, col)
+                if neighbor.state in acceptables: 
                     ls.append(neighbor)
         
         return ls
@@ -141,7 +137,7 @@ class MatrixGraph(Printable, IGraph, Clickable):
     def goal_reached(self):
         bol = False
         if self.destination != None:
-            bol = self.destination.state >= AbstractNode.Mode.FINISHED
+            bol = self.destination.state >= AbstractNode.Mode.WORKED
         return bol
     
     def get_starters(self) -> list[AbstractNode]:
@@ -153,16 +149,21 @@ class MatrixGraph(Printable, IGraph, Clickable):
         while None != node:
             node.assign_to_sol()
             if node.prev != None:
-                node = self.vertices[node.prev[1]][ node.prev[0]]
+                node = self.vertices[node.prev[0]][ node.prev[1]]
             else:
                 node = None
     
     def get_destionation(self):
         return self.destination
 
-
-
+    def attach_prev_to_node(self, previous , node):
+        act_node = self.vertices[node.column][node.row]
+        act_node.prev = (previous.column, previous.row)
     
+    def get_key_for_node(self, node):
+        return (node.row, node.column)
+
+
     
 
     

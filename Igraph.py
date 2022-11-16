@@ -40,4 +40,10 @@ class IGraph():
             print("ERROR : IGraph class of type ", type(self), " has no draw_solution implementation")
             self.activated[4] = True
     
+    def attach_prev_to_node(self, previous, node):
+        pass
+
+    def get_key_for_node(self, node):
+        pass
+    
     

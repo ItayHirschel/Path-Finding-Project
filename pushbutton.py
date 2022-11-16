@@ -5,10 +5,11 @@ from clickable import Clickable
 from workmode import WORK_MODE, WorkMode
 
 class PushButton(TextBox, Clickable):
-    def __init__(self, x_pos, y_pos, width, height, text, func, bg_color = WHITE, txt_color = BLACK):
+    def __init__(self, x_pos, y_pos, width, height, text, func, bg_color = WHITE, txt_color = BLACK, inact_modes = [WorkMode.STERILE]):
         super().__init__(x_pos, y_pos, width, height, text = text,  bg_color = bg_color, txt_color = txt_color)
         self.func = func
         Clickable.CLICKABLES.append(self)
+        self.inactive = inact_modes
     
     def is_in(self, x, y):
         return self.rect.collidepoint(x, y)
@@ -22,7 +23,7 @@ class PushButton(TextBox, Clickable):
         self.bg_color = orig_color
     
     def handle_click(self):
-        if WORK_MODE.get_mode() != WorkMode.STERILE:
+        if WORK_MODE.get_mode() not in self.inactive:
             x, y = pygame.mouse.get_pos()
             if self.is_in(x, y):
                 return self.func()

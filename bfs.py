@@ -50,6 +50,7 @@ class BFS_scanner():
                 if neighbor.state == AbstractNode.Mode.NOT_TOUCHED:
                     self.graph.touch(neighbor)
                     self.fifo.push(neighbor)
+                    self.graph.attach_prev_to_node( node , neighbor) 
             self.graph.finish(node)
             return (not self.graph.goal_reached())
         return False

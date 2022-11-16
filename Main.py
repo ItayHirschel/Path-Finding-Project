@@ -40,7 +40,7 @@ def mainloop(graph : MatrixGraph):
     ALGO_CHOICE = RadioButton(alg_options, 0)
 
 
-    RESET_BUTTON = PushButton(700, 25, 180, 30, "reset graph", lambda : graph.graph_boot())
+    RESET_BUTTON = PushButton(700, 25, 180, 30, "reset graph", lambda : graph.graph_boot(), inact_modes=[WorkMode.PLAY])
     GRAPH_SIZE_TXT = TextBox(700, 100, VisGlobals["graph size txt box"], VisGlobals["graph size txt box"], text = MatrixGlobals["graph size"])
     DECREASE_SIZE_BUTTON = PushButton(650, 100, VisGlobals["graph size txt box"], VisGlobals["graph size txt box"], "-", dec_size)
     INCREASE_SIZE_BUTTON = PushButton(750, 100, VisGlobals["graph size txt box"], VisGlobals["graph size txt box"], "+", inc_size)
