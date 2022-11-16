@@ -52,8 +52,8 @@ class BFS_scanner():
                     self.fifo.push(neighbor)
                     self.graph.attach_prev_to_node( node , neighbor) 
             self.graph.finish(node)
-            return (not self.graph.goal_reached())
-        return False
+            
+        return len(self.fifo.queue) and (not self.graph.goal_reached())
 
     def is_success(self):
         return self.graph.goal_reached()
