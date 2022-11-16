@@ -1,12 +1,12 @@
 from ProjectConstants import *
 import pygame
-from radiobutton import RadioButton
 from matrixgraph import MatrixGraph
 from workmode import WORK_MODE, WorkMode
+from clickable import Clickable
 
 
-def handel_mouse_left_key(clickables):
-    for clickable in clickables:
+def handel_mouse_left_key():
+    for clickable in Clickable.CLICKABLES:
         clickable.handle_click()
 
 def mouse_motion_handler(node : MatrixGraph.InnerNode):

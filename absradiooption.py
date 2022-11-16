@@ -3,25 +3,14 @@ from ProjectConstants import *
 class AbstractRadio():
 
     class Option:
-        def __init__(self, name : str, mode, x_pos : int, y_pos : int, button_size = radio_button_size):
+        def __init__(self, name : str, mode, x_pos : int, y_pos : int):
             self.opt_name = name
             self.mode = mode
             self.x_pos = x_pos
             self.y_pos = y_pos
-            self.size = button_size
-
-
-        def is_in(self, x, y):
-            d = ((x - self.x_pos) ** 2 + (y - self.y_pos) ** 2) ** 0.5
-            return d < self.size
-        
-        def get_text(self):
-            return 
         
 
-    def __init__(self, surface : pygame.Surface, font, option_list = [], def_choice = -1):
-        self.surface = surface
-        self.font = font
+    def __init__(self, option_list = [], def_choice = -1):
         self.none_chosen = AbstractRadio.Option("null", None, 0, 0)
         self.options = option_list
         self.choice = self.none_chosen

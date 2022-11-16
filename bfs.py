@@ -22,10 +22,11 @@ class BFS_scanner():
         def clear(self):
             self.queue.clear()
         
-        def init_fifo(self):
-            for node in self.queue:
-                node.touch()
-            self.is_init = True
+
+    def init_fifo(self):
+        for node in self.fifo.queue:
+            self.graph.touch(node)
+        self.fifo.is_init = True
 
     def __init__(self, graph : IGraph):
         self.graph = graph
@@ -36,15 +37,12 @@ class BFS_scanner():
         for node in self.graph.get_starters():
             self.fifo.push(node)
 
-    def init_fifo(self):
-        for node in self.fifo.queue:
-            node.touch()
-        self.fifo.is_init = True
+
     
     def step(self):
 
         if not self.fifo.is_init:
-            self.fifo.init_fifo()
+            self.init_fifo()
         
         if len(self.fifo.queue) :
             node = self.fifo.pop()

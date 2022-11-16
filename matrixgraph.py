@@ -14,11 +14,10 @@ class MatrixGraph(Printable, IGraph, Clickable):
 
     class InnerNode(AbstractNode, Printable):
 
-        def __init__(self, surface : pygame.Surface, x_pos, y_pos, row, column, color_scheme = [UNTOUCHED_COLOR, TOUCHED_COLOR, FINISHED_COLOR, SOL_COLOR, OFF_COLOR]):
+        def __init__(self, x_pos, y_pos, row, column, color_scheme = [UNTOUCHED_COLOR, TOUCHED_COLOR, FINISHED_COLOR, SOL_COLOR, OFF_COLOR]):
             super().__init__(x_pos, y_pos)
             self.rect = pygame.Rect(x_pos, y_pos, VisGlobals["vertex size"], VisGlobals["vertex size"])
             self.color_scheme = color_scheme
-            self.surface = surface
             self.row = row
             self.column = column
 
@@ -33,7 +32,7 @@ class MatrixGraph(Printable, IGraph, Clickable):
 
             if self.rect.collidepoint(x, y):
                 color = darken(color)
-            pygame.draw.rect(self.surface, color, self.rect)
+            pygame.draw.rect(Printable.surface, color, self.rect)
 
         def click_handler(self):
             if WORK_MODE.get_mode() == WorkMode.ON_OFF_MODE:
@@ -41,9 +40,10 @@ class MatrixGraph(Printable, IGraph, Clickable):
         
 
         
-    def __init__(self, surface : pygame.Surface):
-        self.surface = surface
+    def __init__(self):
         self.graph_boot()
+        Clickable.CLICKABLES.append(self)
+        Printable.PRINTABLES.append(self)
         
 
     def get_vertices(self):
@@ -64,7 +64,7 @@ class MatrixGraph(Printable, IGraph, Clickable):
         self.WidthSpread = (PygameConstants["GRAPH WIDTH"] - 10) / self.columns
         self.HeightSpread = (PygameConstants["GRAPH HEIGHT"] - 10) / self.rows
         self.vertices : list[list[MatrixGraph.InnerNode]] = [
-            [MatrixGraph.InnerNode(self.surface, 10 + row * self.WidthSpread, 10 + col * self.HeightSpread, row, col) for row in range(self.columns)] for col in range(self.rows)]
+            [MatrixGraph.InnerNode(10 + row * self.HeightSpread, 10 + col * self.WidthSpread, row, col) for row in range(self.columns)] for col in range(self.rows)]
         self.starting_points : list[MatrixGraph.InnerNode] = []
         self.destination : MatrixGraph.InnerNode = None
 
@@ -151,12 +151,14 @@ class MatrixGraph(Printable, IGraph, Clickable):
         node = self.destination
 
         while None != node:
-            print("!", node.row, node.column)
             node.assign_to_sol()
             if node.prev != None:
                 node = self.vertices[node.prev[1]][ node.prev[0]]
             else:
                 node = None
+    
+    def get_destionation(self):
+        return self.destination
 
 
 

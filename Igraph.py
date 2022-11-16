@@ -32,6 +32,8 @@ class IGraph():
             print("ERROR : IGraph class of type ", type(self), " has no goal_reached implementation")
             self.activated[3] = True
     
+    def get_destionation(self):
+        pass
     
     def draw_solution(self):
         if not self.activated:

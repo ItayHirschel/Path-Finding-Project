@@ -5,9 +5,10 @@ from clickable import Clickable
 from workmode import WORK_MODE, WorkMode
 
 class PushButton(TextBox, Clickable):
-    def __init__(self, surface : pygame.Surface, font, x_pos, y_pos, width, height, text, func, bg_color = WHITE, txt_color = BLACK):
-        super().__init__(surface, x_pos, y_pos, font, width, height, text = text,  bg_color = bg_color, txt_color = txt_color)
+    def __init__(self, x_pos, y_pos, width, height, text, func, bg_color = WHITE, txt_color = BLACK):
+        super().__init__(x_pos, y_pos, width, height, text = text,  bg_color = bg_color, txt_color = txt_color)
         self.func = func
+        Clickable.CLICKABLES.append(self)
     
     def is_in(self, x, y):
         return self.rect.collidepoint(x, y)

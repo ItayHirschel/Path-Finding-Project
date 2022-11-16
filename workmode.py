@@ -4,10 +4,23 @@ from clickable import Clickable
 from absradiooption import AbstractRadio
 from printable import Printable
 
+
 class WorkModeButton(Clickable, Printable, AbstractRadio):  
 
-    def __init__(self, surface : pygame.Surface, font, option_list = [], def_choice = -1):
-        super().__init__(surface, font, option_list, def_choice)
+    class Option(AbstractRadio.Option):
+
+        def __init__(self, name : str, mode, x_pos : int, y_pos : int, button_size = radio_button_size):
+            super().__init__(name, mode, x_pos , y_pos )
+            self.size = radio_button_size
+        
+        def is_in(self, x, y):
+            return (x - self.x_pos) ** 2 + (y - self.y_pos) ** 2 <= self.size ** 2
+
+
+    def __init__(self, option_list = [], def_choice = -1):
+        super().__init__(option_list, def_choice)
+        Clickable.CLICKABLES.append(self)
+        Printable.PRINTABLES.append(self)
     
     def handle_click(self):
         x, y = pygame.mouse.get_pos()
@@ -23,15 +36,15 @@ class WorkModeButton(Clickable, Printable, AbstractRadio):
             if opt.is_in(x, y):
                 color = darken(color)
             
-            pygame.draw.circle(self.surface, color,(opt.x_pos,opt.y_pos), opt.size)
+            pygame.draw.circle(Printable.surface, color,(opt.x_pos,opt.y_pos), opt.size)
 
-            text = self.font.render(opt.opt_name, True, WHITE, BLACK)
+            text = Printable.font.render(opt.opt_name, True, WHITE, BLACK)
             text_rect = text.get_rect()
             text_rect.center = (opt.x_pos , opt.y_pos)
             text_rect.left = opt.x_pos + opt.size * 1.5
-            self.surface.blit(text, text_rect)
+            Printable.surface.blit(text, text_rect)
         
-        pygame.draw.circle(self.surface, BLACK, (self.choice.x_pos, self.choice.y_pos), self.choice.size * radio_inner_circle_factor)
+        pygame.draw.circle(Printable.surface, BLACK, (self.choice.x_pos, self.choice.y_pos), self.choice.size * radio_inner_circle_factor)
 
 class WorkMode():
     STERILE = 0
@@ -49,5 +62,5 @@ work_modes = [
 ]
 
 
-WORK_MODE = WorkModeButton(None, None, work_modes, 0)
+WORK_MODE = WorkModeButton( work_modes, 0)
 

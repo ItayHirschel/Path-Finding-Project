@@ -1,5 +1,8 @@
 
 class Clickable:
+
+    CLICKABLES = []
+
     activated = False
     def handel_click(self):
         if not self.activated:
