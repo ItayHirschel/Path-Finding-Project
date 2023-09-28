@@ -45,5 +45,8 @@ class IGraph():
 
     def get_key_for_node(self, node):
         pass
+
+    def distanceHeuristic(self, node_1, node_2):
+        pass
     
     

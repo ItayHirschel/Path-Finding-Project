@@ -163,6 +163,10 @@ class MatrixGraph(Printable, IGraph, Clickable):
     def get_key_for_node(self, node):
         return (node.row, node.column)
 
+    def distanceHeuristic(self, node_1 : InnerNode, node_2 : InnerNode):
+        return ((node_1.column - node_2.column) ** 2 + (node_1.row - node_2.row) ** 2)
+
+
 
     
 
