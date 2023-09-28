@@ -11,6 +11,7 @@ from clickable import Clickable
 from workmode import WORK_MODE, WorkMode
 from bfs import BFS_scanner
 from dfs import DFS_scanner
+from astar import ASTAR_scanner
 # WORK MODES
 
 
@@ -34,7 +35,8 @@ def mainloop(graph : MatrixGraph):
 
     alg_options = [
         RadioButton.CircleOption("BFS scan", BFS_scanner, 650, 400),
-        RadioButton.CircleOption("DFS scan", DFS_scanner, 650, 370)
+        RadioButton.CircleOption("DFS scan", DFS_scanner, 650, 370),
+        RadioButton.CircleOption("A* scan", ASTAR_scanner, 650, 340)
     ]
 
     ALGO_CHOICE = RadioButton(alg_options, 0)
@@ -100,6 +102,7 @@ def mainloop(graph : MatrixGraph):
 
         if type(algorithm) != ALGO_CHOICE.get_mode():
             algorithm = ALGO_CHOICE.get_mode()(graph)
+            print(algorithm)
 
         if not algo_running:
            algorithm.update_queue()
