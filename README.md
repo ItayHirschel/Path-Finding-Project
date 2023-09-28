@@ -8,14 +8,24 @@ A project of path finding visualization using pygame
 ## Run the Main.py file.
 This screen will open:
 
+![DefaultScreen](https://github.com/ItayHirschel/Path-Finding-Project/assets/105657158/f5763e14-0a84-4c7c-84a7-a238755d8d89)
+
+
+
 The board will open in sterile mode (1 on guide Image), **until changing the mode no editing can be made**.
 
 Guide Image:
+
+![Guide](https://github.com/ItayHirschel/Path-Finding-Project/assets/105657158/62c9680f-beac-4d88-a55e-5af0943638e2)
 
 
 ## Tile Number Editing
 To increase or decrease the amount of tiles on board use the '+' and '-' button (5 on Guide Image) to change the number shown.\
 After reaching the wanted number click the reset button (6 on Guide Image) to apply the changes
+
+![More](https://github.com/ItayHirschel/Path-Finding-Project/assets/105657158/dec99612-2e3c-4488-9d53-0fa8926ed3e8)
+![Less](https://github.com/ItayHirschel/Path-Finding-Project/assets/105657158/7c37dc04-0042-4011-903b-2e470c630632)
+
 
 ## Editing Board
 
