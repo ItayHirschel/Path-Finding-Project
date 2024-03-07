@@ -4,7 +4,7 @@ A project of path finding visualization using pygame
 # Requirements
 * pygame
 
-# Intruction
+# Instruction
 ## Run the Main.py file.
 This screen will open:
 
