@@ -102,7 +102,7 @@ def mainloop(graph : MatrixGraph):
 
         if type(algorithm) != ALGO_CHOICE.get_mode():
             algorithm = ALGO_CHOICE.get_mode()(graph)
-            print(algorithm)
+            #print(algorithm)
 
         if not algo_running:
            algorithm.update_queue()
